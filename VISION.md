@@ -1,0 +1,295 @@
+# Nokomon: Game Vision
+
+## Status
+
+This document captures the initial shared vision for **Nokomon**. It defines the
+game's current creative and technical direction while leaving detailed balance,
+content, and production decisions open for prototyping.
+
+## High concept
+
+Nokomon is a top-down creature-collecting RPG set in a world where human
+expansion is disrupting ancient creature habitats and migration routes. Players
+explore interconnected regions, befriend creatures by understanding them, build
+a party for tactical turn-based battles, and develop a close bond with a
+noncombat familiar.
+
+The player's decisions affect both settlements and ecosystems. Progress should
+regularly ask what humanity owes the living world when human welfare and
+creature welfare cannot both be protected without sacrifice.
+
+## Player experience
+
+Nokomon should create four recurring feelings:
+
+- **Discovery:** What lives here, and what is hidden beyond the next landmark?
+- **Understanding:** How does this creature behave, and what does it need?
+- **Attachment:** This named and customized creature has become part of my story.
+- **Responsibility:** Who benefits from my decision, and who bears its cost?
+
+The presentation should have the immediacy and readability associated with
+top-down `.io` games: responsive movement, clean silhouettes, visible creatures,
+minimal friction, and short interactions. This does not imply that the initial
+game is massively multiplayer.
+
+## Design pillars
+
+### Creatures are living beings, not equipment
+
+The world contains biological, spiritual, and mythological creatures. There are
+no robots or mechanical creature species. Humans may use grounded technology,
+but Nokomon should remain a world of living ecosystems rather than manufactured
+monsters.
+
+Collecting centers on learning about creatures. Recruitment may involve battle,
+but can also require observation, assistance, food, environmental restoration,
+or satisfying a creature-specific social behavior. Rare creatures should be
+memorable to discover rather than merely having low random capture odds.
+
+### Bonds are personal
+
+Players can give individual creatures and their familiar custom names. A
+creature's species name remains visible in encyclopedic contexts, while its
+given name is used by the party interface, clinics, dialogue, and battles.
+
+Creatures and the familiar can wear cosmetic accessories such as hats, ribbons,
+scarves, flowers, glasses, badges, and collars. Cosmetics express personality
+and do not modify combat statistics.
+
+### Choices carry visible consequences
+
+Human needs must be legitimate, and creature-friendly choices must carry real
+costs. The game should avoid reducing this tension to a single good-versus-evil
+meter.
+
+Consequences should be represented through specific world states such as:
+
+- Settlement welfare and available services
+- Habitat health and creature populations
+- Migration patterns and access to resources
+- Relationships with communities and conservation-minded groups
+- The familiar's behavior and understanding of the world
+
+Choices should visibly change settlements, routes, ecosystems, dialogue, and
+later conflicts.
+
+Example dilemmas include restoring a migration route through farmland, diverting
+water between a drought-stricken town and an aquatic habitat, and protecting a
+dangerous guardian creature whose territory supplies a community's livelihood.
+
+## Exploration
+
+The world is a compact collection of interconnected regions rather than an
+enormous procedural map. Creatures appear visibly in habitats and exhibit
+behavior appropriate to their species, the environment, weather, and time.
+
+The central exploration loop is:
+
+1. Prepare in a settlement.
+2. Enter a region and observe its ecosystem.
+3. Discover creatures, landmarks, and local conflicts.
+4. Befriend or battle creatures and resolve expedition objectives.
+5. Unlock new familiar adaptations and routes.
+6. Return to a settlement to heal, learn, customize the party, and see the
+   consequences of recent choices.
+
+### The familiar
+
+The player has a named familiar that travels alongside them but does not occupy
+a party slot and never participates in ordinary battles.
+
+As the player explores, studies creatures, and restores parts of the world, the
+familiar permanently learns adaptations such as:
+
+- Swimming through deep water
+- Gliding across gaps
+- Burrowing into tunnels or uncovering buried objects
+- Tracking creatures by scent or other signs
+- Revealing spirits and hidden paths
+- Moving natural obstacles
+- Illuminating dark places
+- Communicating with ancient creatures
+
+Adaptations do not need to be equipped. Once discovered, they remain available
+and make exploration increasingly fluid. They should manifest through expressive
+changes in the familiar's behavior or appearance while preserving its core
+identity.
+
+The familiar is also central to the story. Its growing ability to absorb and
+express creature adaptations may challenge how both human communities and the
+player understand the boundary between people and creatures.
+
+## Creatures and affinities
+
+Creatures have affinities encompassing natural elements and supernatural or
+conceptual forces. The system must be expandable without changing the underlying
+battle code.
+
+Candidate affinities include:
+
+- Fire
+- Water
+- Earth
+- Air
+- Nature
+- Ghost
+- Mystic
+- Shadow
+- Future possibilities such as Light, Ice, Storm, Poison, Dream, Sound, or Void
+
+Affinity relationships should follow understandable physical, ecological, or
+mythological logic. Confirmed examples are:
+
+- Water is effective against Fire because it extinguishes fire.
+- Water is effective against Earth because it causes erosion.
+- Earth is effective against Air because wind cannot readily move stone.
+
+Advantages should matter without deciding a battle by themselves. Exact damage
+multipliers and the complete affinity chart remain prototype decisions.
+
+### Shadow and Void
+
+If both affinities are eventually used, their identities should remain distinct:
+
+- **Shadow** represents hidden life: darkness, fear, secrecy, illusion,
+  nightmares, and ambush.
+- **Void** represents absence: silence, erasure, emptiness, spatial distortion,
+  and forces that may not belong to the natural world.
+
+In short, Shadow hides what exists; Void removes it. Shadow can be a regular
+affinity, while Void should be reserved for rare, late-game creatures or story
+events and may interact unusually with the standard chart. Void should be omitted
+if the narrative does not give it a clear purpose.
+
+Initial creatures should generally have one affinity. The data model may allow
+multiple affinities so the mechanic can be explored later without a rewrite.
+
+## Battles
+
+Battles are turn-based. The player carries a party of up to six creatures, with
+one creature active at a time.
+
+Each creature equips four moves:
+
+1. General technique
+2. General technique
+3. General technique
+4. **Instinct**: a non-damaging tactical move
+
+Instincts may protect the user, raise or lower statistics, recover health,
+cleanse a condition, prepare a counter, manipulate action priority, or support a
+future switch. A creature may learn multiple Instincts while equipping only one.
+
+On a turn, a player can use a move, switch the active creature, or attempt to
+withdraw when the encounter allows it. Priority and speed determine resolution.
+Switching is strategically important, and some techniques may anticipate or
+punish predictable switches.
+
+Most wild and routine encounters should use fewer than six opposing creatures.
+Full-party battles are reserved for rivals, major characters, and important
+story encounters so ordinary play remains brisk.
+
+### Recovery and endurance
+
+Nokomon has no potions or other consumable healing items. Recovery comes from:
+
+- Healing and regeneration moves used by creatures
+- Defensive and cleansing abilities
+- Clinics and doctors in towns
+- Resting at safe locations or appropriate natural sanctuaries
+
+Clinics provide routine healing and reinforce the role of settlements in an
+expedition. Healing creatures remain strategically valuable both during and
+between difficult encounters. Routes should be designed around this recovery
+model rather than balanced around an inventory of consumables.
+
+## Customization
+
+Cosmetic accessories use visual attachment points such as the head, face, neck,
+back, or tail. The first implementation should concentrate on polished head and
+neck accessories before expanding to more difficult body shapes.
+
+Creature animations provide offsets for supported attachment points so an
+accessory can follow the creature without requiring a unique combined sprite
+sheet for every creature-accessory pairing.
+
+## Narrative foundation
+
+Ancient migration routes are collapsing. The player becomes involved with people
+working to understand or restore them and discovers that the disruption is tied
+to broader changes in the relationship between civilization and creatures.
+
+Different communities propose competing responses: preservation, adaptation,
+relocation, management, exploitation, or control. The player's choices determine
+which settlements thrive, which habitats survive, and whether coexistence is
+possible without one side bearing all of the cost.
+
+The tone should carry the weight of prioritizing humanity or creatures. It can
+still contain warmth, humor, wonder, and companionship, but consequences should
+not be erased by an obviously perfect solution.
+
+## Technical direction
+
+Nokomon will use **Godot 4 with GDScript** and a two-dimensional top-down
+presentation. The project should use the Compatibility renderer and test web
+exports from the beginning.
+
+The initial game is single-player. Future trading or turn-based battles should
+remain possible by keeping deterministic combat rules and game data separate
+from user interface, animation, and local save state. Multiplayer infrastructure
+is not part of the initial scope.
+
+### Data-driven content
+
+Adding creatures is one of the project's core creative activities. New creatures
+should usually be created from data and art without writing gameplay code.
+
+A creature definition should be able to reference:
+
+- Identity, species text, affinity, habitat tags, and rarity
+- Base statistics and growth
+- Learnable techniques and Instincts
+- Passive traits and battle behavior
+- Overworld behavior and recruitment conditions
+- Familiar adaptation contributions
+- Sprites, portraits, animations, sounds, and cosmetic attachment points
+
+Affinities, moves, traits, status effects, recruitment conditions, and
+adaptations should also be reusable data resources. Unique scripts remain
+possible for exceptional creatures but should not be the default workflow.
+
+A later editor tool may provide creature creation, ID validation, sprite
+previews, stat-curve previews, affinity checks, and immediate test battles.
+
+## First playable prototype
+
+The first vertical slice should be small enough to test the complete experience:
+
+- One settlement with a working clinic
+- One nearby biome
+- Approximately six battle-capable creatures
+- A representative subset of the initial affinities
+- A party of up to six, with one active creature at a time
+- Four-move battles, including Instincts and creature-based healing
+- One meaningful non-battle recruitment encounter
+- The named familiar and one permanently unlocked adaptation
+- Creature naming and a small set of head or neck cosmetics
+- One rival battle and one guardian encounter
+- One decision that visibly affects both the settlement and its ecosystem
+- Desktop and browser builds
+
+The prototype's primary question is whether exploring, understanding, befriending,
+customizing, and battling creatures forms a satisfying loop. Content scale and
+multiplayer should wait until that answer is clear.
+
+## Open design questions
+
+- What is the final initial affinity roster and complete matchup chart?
+- How are creatures befriended, and when is battle required?
+- What information about enemy intent is shown during battle?
+- How do creatures grow, learn moves, or change form?
+- What is the familiar's origin and personality?
+- How demanding should expeditions be without consumable recovery items?
+- What visual style best combines `.io` readability with the desired emotional
+  weight?
+- How are major world-state consequences communicated and saved?
