@@ -125,27 +125,53 @@ Creatures have affinities encompassing natural elements and supernatural or
 conceptual forces. The system must be expandable without changing the underlying
 battle code.
 
-Candidate affinities include:
+The current affinities are:
 
 - Fire
 - Water
 - Earth
 - Air
-- Nature
+- Plant
+- Ice
 - Ghost
 - Mystic
-- Shadow
-- Future possibilities such as Light, Ice, Storm, Poison, Dream, Sound, or Void
+- Poison
+- Bug
+- Beast
+- Electric
+- Funguy
+- Dragon
+
+Plant takes the place of the earlier broad Nature candidate in the current
+battle chart. Shadow and future possibilities such as Light, Storm, Dream,
+Sound, or Void may be explored later.
 
 Affinity relationships should follow understandable physical, ecological, or
-mythological logic. Confirmed examples are:
+mythological logic. An advantageous attacking affinity deals **2x damage**. A
+defending affinity's resistance causes it to take **half damage**. These rules
+can overlap: a matchup can be shaped by the attacker's advantage, the defender's
+resistance, or both. Any interaction not listed below is neutral.
 
-- Water is effective against Fire because it extinguishes fire.
-- Water is effective against Earth because it causes erosion.
-- Earth is effective against Air because wind cannot readily move stone.
+| Affinity | Its moves deal 2x damage to | It takes half damage from |
+| --- | --- | --- |
+| Water | Fire, Earth, Ghost, Bug | Fire, Bug, Funguy |
+| Fire | Plant, Ice, Bug, Beast | Plant, Ice, Mystic, Electric |
+| Earth | Mystic, Poison, Electric | Mystic, Poison, Electric, Air |
+| Air | Water, Fire | Fire, Bug, Beast |
+| Ghost | Plant, Beast, Dragon, Ghost | Poison, Beast, Funguy |
+| Plant | Water, Earth | Electric, Water, Air |
+| Ice | Water, Earth, Air, Bug, Funguy, Dragon, Plant | Ice |
+| Mystic | Ghost, Dragon, Mystic | Dragon, Ice, Bug, Funguy |
+| Poison | Plant, Water, Ice, Mystic | Ice, Funguy, Air |
+| Bug | Plant, Mystic, Air | Mystic, Poison, Beast |
+| Beast | Mystic | Bug, Ghost |
+| Electric | Air, Dragon | Air, Fire |
+| Funguy | Plant, Bug, Ghost | Bug, Funguy, Ghost, Air |
+| Dragon | Water, Fire, Earth, Beast, Dragon | Fire, Bug, Ghost |
 
-Advantages should matter without deciding a battle by themselves. Exact damage
-multipliers and the complete affinity chart remain prototype decisions.
+For example, Water extinguishes Fire and erodes Earth. Earth resists Air because
+wind cannot readily move stone. Advantages should matter without deciding a
+battle by themselves.
 
 ### Shadow and Void
 
