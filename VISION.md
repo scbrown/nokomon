@@ -86,10 +86,10 @@ behavior appropriate to their species, the environment, weather, and time.
 To befriend a Nokomon, the player first finds it in the world. How an encounter
 begins depends on the creature's behavior: some Nokomon run away when the player
 approaches, some curiously approach the player, and some stalk and attack the
-player, initiating the encounter themselves. Reaching or meeting a Nokomon may
-lead to battle or ask the player to meet non-battle conditions such as
-observing, helping, feeding, or responding to its social behavior. Successfully
-resolving those conditions befriends the Nokomon.
+player. When an aggressive Nokomon attacks, its attack starts an encounter.
+Reaching or meeting a Nokomon may lead to battle or ask the player to meet
+non-battle conditions such as observing, helping, feeding, or responding to its
+social behavior. Successfully resolving those conditions befriends the Nokomon.
 
 The central exploration loop is:
 
@@ -202,7 +202,8 @@ multiple affinities so the mechanic can be explored later without a rewrite.
 ## Battles
 
 Battles are turn-based. The player carries a party of up to six creatures, with
-one creature active at a time.
+one creature active at a time. When a battle begins during an encounter, the
+player sends out one Nokomon from the party to fight the opposing Nokomon.
 
 Each creature equips four moves:
 
@@ -223,6 +224,12 @@ punish predictable switches.
 Most wild and routine encounters should use fewer than six opposing creatures.
 Full-party battles are reserved for rivals, major characters, and important
 story encounters so ordinary play remains brisk.
+
+### Experience
+
+Encounters award EXP for either defeating an opposing Nokomon in battle or
+successfully befriending it. The exact recipient, distribution, and amount of
+EXP remain progression and balance decisions.
 
 ### Recovery and endurance
 
