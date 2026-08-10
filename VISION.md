@@ -205,6 +205,10 @@ Battles are turn-based. The player carries a party of up to six creatures, with
 one creature active at a time. When a battle begins during an encounter, the
 player sends out one Nokomon from the party to fight the opposing Nokomon.
 
+During an encounter, the interface shows the opposing Nokomon's name, level,
+remaining health, and any status inflictions currently affecting it. This
+information remains visible so the player can make informed tactical choices.
+
 Each creature equips four moves:
 
 1. General technique
