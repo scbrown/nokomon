@@ -139,12 +139,12 @@ The current affinities are:
 - Bug
 - Beast
 - Electric
-- Funguy
+- Fungus
 - Dragon
 
-Plant takes the place of the earlier broad Nature candidate in the current
-battle chart. Shadow and future possibilities such as Light, Storm, Dream,
-Sound, or Void may be explored later.
+The affinity previously called Nature has been renamed **Plant**. Shadow and
+future possibilities such as Light, Storm, Dream, Sound, or Void may be
+explored later.
 
 Affinity relationships should follow understandable physical, ecological, or
 mythological logic. An advantageous attacking affinity deals **2x damage**. A
@@ -154,19 +154,19 @@ resistance, or both. Any interaction not listed below is neutral.
 
 | Affinity | Its moves deal 2x damage to | It takes half damage from |
 | --- | --- | --- |
-| Water | Fire, Earth, Ghost, Bug | Fire, Bug, Funguy |
+| Water | Fire, Earth, Ghost, Bug | Fire, Bug, Fungus |
 | Fire | Plant, Ice, Bug, Beast | Plant, Ice, Mystic, Electric |
 | Earth | Mystic, Poison, Electric | Mystic, Poison, Electric, Air |
 | Air | Water, Fire | Fire, Bug, Beast |
-| Ghost | Plant, Beast, Dragon, Ghost | Poison, Beast, Funguy |
+| Ghost | Plant, Beast, Dragon, Ghost | Poison, Beast, Fungus |
 | Plant | Water, Earth | Electric, Water, Air |
-| Ice | Water, Earth, Air, Bug, Funguy, Dragon, Plant | Ice |
-| Mystic | Ghost, Dragon, Mystic | Dragon, Ice, Bug, Funguy |
-| Poison | Plant, Water, Ice, Mystic | Ice, Funguy, Air |
+| Ice | Water, Earth, Air, Bug, Fungus, Dragon, Plant | Ice |
+| Mystic | Ghost, Dragon, Mystic | Dragon, Ice, Bug, Fungus |
+| Poison | Plant, Water, Ice, Mystic | Ice, Fungus, Air |
 | Bug | Plant, Mystic, Air | Mystic, Poison, Beast |
 | Beast | Mystic | Bug, Ghost |
 | Electric | Air, Dragon | Air, Fire |
-| Funguy | Plant, Bug, Ghost | Bug, Funguy, Ghost, Air |
+| Fungus | Plant, Bug, Ghost | Bug, Fungus, Ghost, Air |
 | Dragon | Water, Fire, Earth, Beast, Dragon | Fire, Bug, Ghost |
 
 For example, Water extinguishes Fire and erodes Earth. Earth resists Air because
