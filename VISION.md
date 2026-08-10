@@ -83,14 +83,23 @@ The world is a compact collection of interconnected regions rather than an
 enormous procedural map. Creatures appear visibly in habitats and exhibit
 behavior appropriate to their species, the environment, weather, and time.
 
+To befriend a Nokomon, the player first finds it in the world. How an encounter
+begins depends on the creature's behavior: some Nokomon run away when the player
+approaches, some curiously approach the player, and some stalk and attack the
+player, initiating the encounter themselves. Reaching or meeting a Nokomon may
+lead to battle or ask the player to meet non-battle conditions such as
+observing, helping, feeding, or responding to its social behavior. Successfully
+resolving those conditions befriends the Nokomon.
+
 The central exploration loop is:
 
 1. Prepare in a settlement.
 2. Enter a region and observe its ecosystem.
 3. Discover creatures, landmarks, and local conflicts.
-4. Befriend or battle creatures and resolve expedition objectives.
-5. Unlock new familiar adaptations and routes.
-6. Return to a settlement to heal, learn, customize the party, and see the
+4. Approach or respond to a creature to begin its encounter.
+5. Befriend or battle creatures and resolve expedition objectives.
+6. Unlock new familiar adaptations and routes.
+7. Return to a settlement to heal, learn, customize the party, and see the
    consequences of recent choices.
 
 ### The familiar
