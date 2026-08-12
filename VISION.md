@@ -232,8 +232,15 @@ story encounters so ordinary play remains brisk.
 ### Experience
 
 Encounters award EXP for either defeating an opposing Nokomon in battle or
-successfully befriending it. The exact recipient, distribution, and amount of
-EXP remain progression and balance decisions.
+successfully befriending it. A Nokomon levels up after earning enough EXP. For
+most Nokomon, the EXP required for the next level begins at a species-specific
+value from **420 to 800 EXP**. After each level gained, the requirement for the
+following level increases by **250 EXP**. The exact EXP awarded by encounters
+and how it is distributed remain balance decisions.
+
+Some Nokomon evolve after reaching a defined level threshold. Nokomon also
+learn new moves at defined level thresholds. Evolution thresholds and level-up
+move lists are authored per species rather than embedded in progression code.
 
 ### Recovery and endurance
 
@@ -293,8 +300,9 @@ should usually be created from data and art without writing gameplay code.
 A creature definition should be able to reference:
 
 - Identity, species text, affinity, habitat tags, and rarity
-- Base statistics and growth
-- Learnable techniques and Instincts
+- Base statistics, EXP requirements, and growth
+- Evolution thresholds and evolved species
+- Learnable techniques, Instincts, and their level thresholds
 - Passive traits and battle behavior
 - Overworld behavior and recruitment conditions
 - Familiar adaptation contributions
