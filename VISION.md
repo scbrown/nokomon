@@ -32,6 +32,13 @@ top-down `.io` games: responsive movement, clean silhouettes, visible creatures,
 minimal friction, and short interactions. This does not imply that the initial
 game is massively multiplayer.
 
+The world uses a predominantly earthy color palette. Forests are built from
+many dark, layered greens, with lighter foliage and natural highlights used to
+preserve readable paths, creatures, and interaction points. Towns lean into
+warm oranges and varied browns through soil, timber, stone, roofs, and lamplight.
+Other regions may introduce their own accents, but should remain grounded in
+natural, earthy colors so the world feels cohesive.
+
 ## Design pillars
 
 ### Creatures are living beings, not equipment
@@ -348,12 +355,9 @@ multiplayer should wait until that answer is clear.
 
 ## Open design questions
 
-- What is the final initial affinity roster and complete matchup chart?
-- How are creatures befriended, and when is battle required?
 - What information about enemy intent is shown during battle?
-- How do creatures grow, learn moves, or change form?
 - What is the familiar's origin and personality?
 - How demanding should expeditions be without consumable recovery items?
-- What visual style best combines `.io` readability with the desired emotional
-  weight?
+- What rendering and animation style should express the established earthy
+  palette while preserving `.io` readability and emotional weight?
 - How are major world-state consequences communicated and saved?
