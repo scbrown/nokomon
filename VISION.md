@@ -32,6 +32,12 @@ top-down `.io` games: responsive movement, clean silhouettes, visible creatures,
 minimal friction, and short interactions. This does not imply that the initial
 game is massively multiplayer.
 
+Nokomon is a **pixel art game**. Environments, characters, creatures, battle
+scenes, effects, and interface art should share a deliberate pixel-art visual
+language with crisp edges and consistent pixel density. Animation should favor
+clear poses and expressive key frames over excessive detail. Exact sprite
+resolution, tile size, and animation frame counts remain prototype decisions.
+
 The world uses a predominantly earthy color palette. Forests are built from
 many dark, layered greens, with lighter foliage and natural highlights used to
 preserve readable paths, creatures, and interaction points. Towns lean into
@@ -224,7 +230,8 @@ and selection feedback. The battlefield occupies most of the screen, combatant
 information remains clearly separated, and the primary turn commands are large
 and usable with mouse, controller, or touch input. The preproduction layout
 reference is [`design/mockups/battle-ui-green-concept.png`](design/mockups/battle-ui-green-concept.png);
-the placeholder creatures shown there are not established species.
+it communicates layout and palette only, not the final pixel-art rendering
+style, and the placeholder creatures shown there are not established species.
 
 Each creature equips four moves:
 
@@ -358,6 +365,6 @@ multiplayer should wait until that answer is clear.
 - What information about enemy intent is shown during battle?
 - What is the familiar's origin and personality?
 - How demanding should expeditions be without consumable recovery items?
-- What rendering and animation style should express the established earthy
-  palette while preserving `.io` readability and emotional weight?
+- What sprite resolution, tile size, and animation budget best preserve
+  readability across desktop and browser displays?
 - How are major world-state consequences communicated and saved?
