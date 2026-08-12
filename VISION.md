@@ -8,11 +8,11 @@ content, and production decisions open for prototyping.
 
 ## High concept
 
-Nokomon is a top-down creature-collecting RPG set in a world where human
-expansion is disrupting ancient creature habitats and migration routes. Players
-explore interconnected regions, befriend creatures by understanding them, build
-a party for tactical turn-based battles, and develop a close bond with a
-noncombat familiar.
+Nokomon is a top-down creature-collecting RPG set around **1900**, during its
+world's Industrial Revolution. Rapid human expansion is disrupting ancient
+creature habitats and migration routes. Players explore interconnected regions,
+befriend creatures by understanding them, build a party for tactical turn-based
+battles, and develop a close bond with a noncombat familiar.
 
 The player's decisions affect both settlements and ecosystems. Progress should
 regularly ask what humanity owes the living world when human welfare and
@@ -44,6 +44,12 @@ preserve readable paths, creatures, and interaction points. Towns lean into
 warm oranges and varied browns through soil, timber, stone, roofs, and lamplight.
 Other regions may introduce their own accents, but should remain grounded in
 natural, earthy colors so the world feels cohesive.
+
+Human clothing, architecture, tools, transport, and infrastructure reflect the
+turn-of-the-century industrial setting. Railways, steam power, factories, mines,
+mills, and expanding towns can improve human lives while consuming land and
+resources or dividing habitats. Technology should feel grounded in this era;
+modern electronics and futuristic machinery do not belong in the setting.
 
 ## Design pillars
 
@@ -292,9 +298,11 @@ sheet for every creature-accessory pairing.
 
 ## Narrative foundation
 
-Ancient migration routes are collapsing. The player becomes involved with people
-working to understand or restore them and discovers that the disruption is tied
-to broader changes in the relationship between civilization and creatures.
+Ancient migration routes are collapsing as railways, factories, mines, farms,
+and growing settlements reshape the land. The player becomes involved with
+people working to understand or restore the routes and discovers that the
+disruption is tied to broader changes in the relationship between civilization
+and creatures.
 
 Different communities propose competing responses: preservation, adaptation,
 relocation, management, exploitation, or control. The player's choices determine
