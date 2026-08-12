@@ -209,6 +209,16 @@ During an encounter, the interface shows the opposing Nokomon's name, level,
 remaining health, and any status inflictions currently affecting it. This
 information remains visible so the player can make informed tactical choices.
 
+The battle interface should have the immediate readability and large,
+controller-friendly commands of a modern handheld creature-battling RPG while
+maintaining an original Nokomon identity. Its dominant palette is forest green,
+emerald, mint, deep teal, and cream, with restrained accent colors for status
+and selection feedback. The battlefield occupies most of the screen, combatant
+information remains clearly separated, and the primary turn commands are large
+and usable with mouse, controller, or touch input. The preproduction layout
+reference is [`design/mockups/battle-ui-green-concept.png`](design/mockups/battle-ui-green-concept.png);
+the placeholder creatures shown there are not established species.
+
 Each creature equips four moves:
 
 1. General technique
