@@ -296,6 +296,28 @@ Creature animations provide offsets for supported attachment points so an
 accessory can follow the creature without requiring a unique combined sprite
 sheet for every creature-accessory pairing.
 
+## Inventory interface
+
+The inventory should use the broad, controller-friendly structure of a modern
+console creature-collecting RPG while maintaining an original Nokomon identity.
+A slim pocket selector sits at the left, a large scrollable item list occupies
+the center, and a generous detail panel at the right shows the selected item's
+art, description, and available action. Selection, quantity, and controller or
+touch prompts must remain readable at a glance.
+
+Its visual language is grounded turn-of-the-century steampunk: aged brass,
+dark iron, worn leather, parchment, walnut, and restrained gauge or rivet
+details, supported by the world's forest-green and deep-teal accents. Mechanical
+decoration must remain secondary to clarity, and should avoid futuristic
+electronics or excessive ornamental gears. The preproduction layout reference
+is [`design/mockups/inventory-ui-steampunk-concept.png`](design/mockups/inventory-ui-steampunk-concept.png);
+its item names and art are illustrative rather than established content.
+
+Inventory pockets may cover exploration tools, key items, creature treats,
+cosmetics, and gathered materials. The interface must not imply potions or other
+usable healing consumables, since recovery remains the role of creatures,
+clinics, rest, and suitable sanctuaries.
+
 ## Narrative foundation
 
 Ancient migration routes are collapsing as railways, factories, mines, farms,
