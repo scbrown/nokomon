@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="InventoryItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/inventory_item_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"railway_pass"
+display_name = "Railway Pass"
+description = "A stamped card granting passage on the valley line."
+category = 1
+icon_label = "P"
+max_stack = 1

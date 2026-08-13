@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="InventoryItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/inventory_item_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"clinic_letter"
+display_name = "Doctor's Letter"
+description = "A sealed request from the settlement clinic. The wax bears a fern emblem."
+category = 1
+icon_label = "L"
+max_stack = 1

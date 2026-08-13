@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="InventoryItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/inventory_item_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"signal_whistle"
+display_name = "Signal Whistle"
+description = "A shrill brass whistle used to signal across wooded trails and factory yards."
+category = 0
+icon_label = "W"
+can_use = true
+max_stack = 9

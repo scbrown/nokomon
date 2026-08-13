@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="InventoryItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/inventory_item_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"honeyed_seed"
+display_name = "Honeyed Seed"
+description = "A fragrant seed treat favored by curious woodland creatures. It is not medicine."
+category = 2
+icon_label = "S"
+can_use = true

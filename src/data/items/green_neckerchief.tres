@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="InventoryItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/inventory_item_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"green_neckerchief"
+display_name = "Green Neckerchief"
+description = "A soft forest-green neck cosmetic with a small brass clasp."
+category = 3
+icon_label = "C"
+can_use = true

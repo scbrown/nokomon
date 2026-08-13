@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="InventoryItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/inventory_item_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"field_journal"
+display_name = "Field Journal"
+description = "Notes, sketches, and observations gathered while studying wild Nokomon."
+category = 0
+icon_label = "J"
+max_stack = 1

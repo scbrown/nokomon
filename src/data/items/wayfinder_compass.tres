@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="InventoryItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/inventory_item_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"wayfinder_compass"
+display_name = "Wayfinder Compass"
+description = "A brass compass tuned to old migration paths. Its needle stirs near forgotten routes."
+category = 0
+icon_label = "N"
+can_use = true
+max_stack = 1

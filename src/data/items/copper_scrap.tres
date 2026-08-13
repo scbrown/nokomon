@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="InventoryItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/inventory_item_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"copper_scrap"
+display_name = "Copper Scrap"
+description = "Clean offcuts collected from a machinist's workshop."
+category = 4
+icon_label = "Cu"
