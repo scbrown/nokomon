@@ -110,6 +110,13 @@ Reaching or meeting a Nokomon may lead to battle or ask the player to meet
 non-battle conditions such as observing, helping, feeding, or responding to its
 social behavior. Successfully resolving those conditions befriends the Nokomon.
 
+Creature treats can be offered during an encounter and are consumed from the
+satchel. Food is not a universal capture item: curious creatures may accept it
+readily, while wary or aggressive creatures may first need the player to read
+their behavior, demonstrate restraint, or reduce the immediate danger. Treats
+never restore battle HP and befriending resolves the encounter without treating
+the creature as defeated.
+
 The central exploration loop is:
 
 1. Prepare in a settlement.

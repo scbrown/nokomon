@@ -443,6 +443,20 @@ func _set_status(message: String) -> void:
 	_status_label.text = message
 
 
+func consume_item(item_id: StringName, amount := 1) -> bool:
+	var entry := _model.find_entry(item_id)
+	if entry == null or entry.quantity < amount:
+		return false
+	_model.remove_item(item_id, amount)
+	_refresh_all()
+	return true
+
+
+func item_quantity(item_id: StringName) -> int:
+	var entry := _model.find_entry(item_id)
+	return entry.quantity if entry != null else 0
+
+
 func _panel_style(color: Color, border_color: Color, border_width: int, radius: int) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = color

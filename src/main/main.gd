@@ -7,12 +7,17 @@ extends Node
 @onready var prompt: Label = $Interface/Hud/Prompt
 @onready var notice: Label = $Interface/Hud/Notice
 
+var _known_companions: Array[CreatureInstance] = []
+
 
 func _ready() -> void:
 	if not OS.has_feature("web"):
 		get_viewport().get_window().min_size = Vector2i(640, 360)
 	inventory.hide()
 	battle.battle_finished.connect(_on_battle_finished)
+	battle.treat_requested.connect(_on_treat_requested)
+	battle.creature_befriended.connect(_on_creature_befriended)
+	_known_companions.append(battle.player_creature)
 	inventory.close_requested.connect(_close_inventory)
 	inventory.item_action_requested.connect(_on_item_action_requested)
 	world.encounter_requested.connect(_on_encounter_requested)
@@ -52,7 +57,23 @@ func _on_encounter_requested(creature_name: String, behavior: String) -> void:
 func _on_battle_finished(player_won: bool) -> void:
 	world.set_player_input_enabled(true)
 	$Interface/Hud.show()
-	notice.text = "Bramblet won the encounter." if player_won else "Bramblet needs care at the clinic."
+	if battle.player_creature.is_fainted():
+		notice.text = "Bramblet needs care at the clinic."
+	elif player_won:
+		notice.text = "Encounter resolved. Companions: %d." % _known_companions.size()
+	else:
+		notice.text = "You withdrew safely."
+
+
+func _on_treat_requested() -> void:
+	var consumed := inventory.consume_item(&"moss_biscuit")
+	battle.resolve_treat_offer(consumed)
+
+
+func _on_creature_befriended(creature: CreatureInstance) -> void:
+	if _known_companions.size() >= 6:
+		return
+	_known_companions.append(creature)
 
 
 func _on_item_action_requested(item_id: StringName) -> void:

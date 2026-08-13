@@ -2,6 +2,8 @@ class_name BattleScreen
 extends Control
 
 signal battle_finished(player_won: bool)
+signal treat_requested
+signal creature_befriended(creature: CreatureInstance)
 
 enum Phase { COMMAND, RESOLVING, FINISHED }
 
@@ -16,6 +18,8 @@ var player_creature := CreatureInstance.new(BRAMBLET, 5, "Bramblet")
 var enemy_creature: CreatureInstance
 var phase := Phase.COMMAND
 var guarded := false
+var enemy_behavior := "curious"
+var _befriended := false
 
 var player_name_label: Label
 var player_hp_bar: ProgressBar
@@ -43,6 +47,8 @@ func start_battle(enemy_name: String, enemy_behavior: String) -> void:
 	definition.defense = 9
 	definition.speed = 8
 	enemy_creature = CreatureInstance.new(definition, 4)
+	self.enemy_behavior = enemy_behavior
+	_befriended = false
 	phase = Phase.COMMAND
 	guarded = false
 	_update_hud()
@@ -73,11 +79,11 @@ func _build_interface() -> void:
 	arena.add_theme_stylebox_override("panel", _style(Color("#376c55"), BRASS, 3, 14))
 	page.add_child(arena)
 	var field := Control.new()
-	field.custom_minimum_size.y = 410
+	field.custom_minimum_size.y = 320
 	arena.add_child(field)
 	creature_texture = TextureRect.new()
-	creature_texture.position = Vector2(65, 70)
-	creature_texture.size = Vector2(360, 300)
+	creature_texture.position = Vector2(65, 35)
+	creature_texture.size = Vector2(330, 260)
 	creature_texture.texture = BRAMBLET.battle_texture
 	creature_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	creature_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -88,7 +94,7 @@ func _build_interface() -> void:
 	enemy_card.size = Vector2(450, 116)
 	field.add_child(enemy_card)
 	var player_card := _make_status_card(false)
-	player_card.position = Vector2(630, 270)
+	player_card.position = Vector2(630, 195)
 	player_card.size = Vector2(520, 116)
 	field.add_child(player_card)
 
@@ -113,6 +119,8 @@ func _build_interface() -> void:
 	_add_command("LEAF FLICK", 8, &"Plant", false)
 	_add_command("BURROW BASH", 10, &"Earth", false)
 	_add_command("BRACE · INSTINCT", 0, &"Plant", true)
+	_add_special_command("OFFER MOSS BISCUIT", _on_offer_treat)
+	_add_special_command("WITHDRAW", _on_withdraw)
 
 
 func _make_status_card(enemy: bool) -> PanelContainer:
@@ -145,7 +153,7 @@ func _make_status_card(enemy: bool) -> PanelContainer:
 
 func _add_command(label: String, power: int, affinity: StringName, instinct: bool) -> void:
 	var button := Button.new()
-	button.custom_minimum_size = Vector2(0, 58)
+	button.custom_minimum_size = Vector2(0, 48)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.text = label
 	button.add_theme_font_size_override("font_size", 18)
@@ -153,6 +161,19 @@ func _add_command(label: String, power: int, affinity: StringName, instinct: boo
 	button.add_theme_stylebox_override("hover", _style(GREEN, CREAM, 3, 9))
 	button.add_theme_stylebox_override("focus", _style(GREEN, CREAM, 4, 9))
 	button.pressed.connect(_on_command.bind(label, power, affinity, instinct))
+	command_grid.add_child(button)
+
+
+func _add_special_command(label: String, callback: Callable) -> void:
+	var button := Button.new()
+	button.custom_minimum_size = Vector2(0, 48)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.text = label
+	button.add_theme_font_size_override("font_size", 18)
+	button.add_theme_stylebox_override("normal", _style(Color("#4a2c23"), BRASS, 2, 9))
+	button.add_theme_stylebox_override("hover", _style(GREEN, CREAM, 3, 9))
+	button.add_theme_stylebox_override("focus", _style(GREEN, CREAM, 4, 9))
+	button.pressed.connect(callback)
 	command_grid.add_child(button)
 
 
@@ -200,10 +221,63 @@ func _resolve_enemy_turn() -> void:
 	_focus_first_command()
 
 
+func _on_offer_treat() -> void:
+	if phase != Phase.COMMAND:
+		return
+	phase = Phase.RESOLVING
+	_set_commands_disabled(true)
+	message_label.text = "* You offer the wild %s a moss biscuit..." % enemy_creature.nickname
+	treat_requested.emit()
+
+
+func resolve_treat_offer(had_treat: bool) -> void:
+	if phase != Phase.RESOLVING:
+		return
+	if not had_treat:
+		message_label.text = "* Your treat pocket is empty."
+		await get_tree().create_timer(0.8).timeout
+		_return_to_commands()
+		return
+	var hp_ratio := float(enemy_creature.current_hp) / float(enemy_creature.max_hp())
+	var succeeds := enemy_behavior == "curious"
+	if enemy_behavior == "wary":
+		succeeds = hp_ratio <= 0.7
+	elif enemy_behavior == "aggressive":
+		succeeds = hp_ratio <= 0.4
+	if succeeds:
+		_befriended = true
+		message_label.text = "* %s accepts the food and chooses to travel with you!" % enemy_creature.nickname
+		creature_befriended.emit(enemy_creature)
+		_finish_battle(true)
+		return
+	message_label.text = "* %s eats, but still keeps its distance." % enemy_creature.nickname
+	await get_tree().create_timer(0.9).timeout
+	_resolve_enemy_turn()
+
+
+func _on_withdraw() -> void:
+	if phase != Phase.COMMAND:
+		return
+	phase = Phase.FINISHED
+	command_grid.hide()
+	message_label.text = "* You give the wild Nokomon space and withdraw."
+	await get_tree().create_timer(1.0).timeout
+	hide()
+	battle_finished.emit(false)
+
+
+func _return_to_commands() -> void:
+	phase = Phase.COMMAND
+	_set_commands_disabled(false)
+	message_label.text = "* What will %s do?" % player_creature.nickname
+	_focus_first_command()
+
+
 func _finish_battle(player_won: bool) -> void:
 	phase = Phase.FINISHED
 	command_grid.hide()
-	message_label.text = "* %s" % ("Bramblet prevailed! The wild Nokomon withdraws." if player_won else "Bramblet can no longer battle. Return to the clinic.")
+	if not _befriended:
+		message_label.text = "* %s" % ("Bramblet prevailed! The wild Nokomon withdraws." if player_won else "Bramblet can no longer battle. Return to the clinic.")
 	await get_tree().create_timer(1.5).timeout
 	hide()
 	battle_finished.emit(player_won)
