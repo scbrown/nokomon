@@ -3,7 +3,7 @@ extends Control
 
 signal battle_finished(player_won: bool)
 
-enum Phase { COMMAND, DODGE, FINISHED }
+enum Phase { COMMAND, RESOLVING, FINISHED }
 
 const BRAMBLET: CreatureDefinition = preload("res://src/data/creatures/bramblet.tres")
 const CREAM := Color("#f0e2bd")
@@ -16,9 +16,6 @@ var player_creature := CreatureInstance.new(BRAMBLET, 5, "Bramblet")
 var enemy_creature: CreatureInstance
 var phase := Phase.COMMAND
 var guarded := false
-var _dodge_time := 0.0
-var _spawn_time := 0.0
-var _hazards: Array[ColorRect] = []
 
 var player_name_label: Label
 var player_hp_bar: ProgressBar
@@ -28,15 +25,12 @@ var enemy_hp_bar: ProgressBar
 var enemy_hp_label: Label
 var message_label: Label
 var command_grid: GridContainer
-var dodge_box: Control
-var guard_marker: ColorRect
 var creature_texture: TextureRect
 
 
 func _ready() -> void:
 	_build_interface()
 	hide()
-	set_process(false)
 
 
 func start_battle(enemy_name: String, enemy_behavior: String) -> void:
@@ -54,37 +48,8 @@ func start_battle(enemy_name: String, enemy_behavior: String) -> void:
 	_update_hud()
 	message_label.text = "A wild %s watches your next move." % enemy_name
 	command_grid.show()
-	dodge_box.hide()
 	show()
-	set_process(true)
 	_focus_first_command()
-
-
-func _process(delta: float) -> void:
-	if phase != Phase.DODGE:
-		return
-	_dodge_time -= delta
-	_spawn_time -= delta
-	var movement := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	guard_marker.position += movement * 250.0 * delta
-	guard_marker.position.x = clampf(guard_marker.position.x, 4.0, dodge_box.size.x - guard_marker.size.x - 4.0)
-	guard_marker.position.y = clampf(guard_marker.position.y, 4.0, dodge_box.size.y - guard_marker.size.y - 4.0)
-	if _spawn_time <= 0.0:
-		_spawn_hazard()
-		_spawn_time = 0.34
-	for hazard in _hazards.duplicate():
-		hazard.position.y += 190.0 * delta
-		if hazard.get_rect().intersects(guard_marker.get_rect()):
-			player_creature.receive_damage(3 if not guarded else 1)
-			_remove_hazard(hazard)
-			_update_hud()
-			if player_creature.is_fainted():
-				_finish_battle(false)
-				return
-		elif hazard.position.y > dodge_box.size.y:
-			_remove_hazard(hazard)
-	if _dodge_time <= 0.0:
-		_end_dodge_phase()
 
 
 func _build_interface() -> void:
@@ -127,13 +92,17 @@ func _build_interface() -> void:
 	player_card.size = Vector2(520, 116)
 	field.add_child(player_card)
 
+	var dialogue_panel := PanelContainer.new()
+	dialogue_panel.custom_minimum_size.y = 82
+	dialogue_panel.add_theme_stylebox_override("panel", _style(Color("#080b0a"), CREAM, 3, 0))
+	page.add_child(dialogue_panel)
 	message_label = Label.new()
-	message_label.custom_minimum_size.y = 54
+	message_label.text = "* Battle narration appears here."
 	message_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	message_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	message_label.add_theme_color_override("font_color", CREAM)
 	message_label.add_theme_font_size_override("font_size", 20)
-	page.add_child(message_label)
+	dialogue_panel.add_child(message_label)
 
 	command_grid = GridContainer.new()
 	command_grid.columns = 2
@@ -144,17 +113,6 @@ func _build_interface() -> void:
 	_add_command("LEAF FLICK", 8, &"Plant", false)
 	_add_command("BURROW BASH", 10, &"Earth", false)
 	_add_command("BRACE · INSTINCT", 0, &"Plant", true)
-
-	dodge_box = Control.new()
-	dodge_box.custom_minimum_size = Vector2(0, 150)
-	dodge_box.clip_contents = true
-	dodge_box.add_theme_stylebox_override("panel", _style(Color("#172422"), BRASS, 3, 8))
-	page.add_child(dodge_box)
-	guard_marker = ColorRect.new()
-	guard_marker.size = Vector2(18, 18)
-	guard_marker.color = Color("#91df79")
-	dodge_box.add_child(guard_marker)
-	dodge_box.hide()
 
 
 func _make_status_card(enemy: bool) -> PanelContainer:
@@ -201,66 +159,59 @@ func _add_command(label: String, power: int, affinity: StringName, instinct: boo
 func _on_command(label: String, power: int, affinity: StringName, instinct: bool) -> void:
 	if phase != Phase.COMMAND:
 		return
+	phase = Phase.RESOLVING
+	_set_commands_disabled(true)
 	guarded = instinct
 	if instinct:
-		message_label.text = "%s braces behind a wall of roots!" % player_creature.nickname
+		message_label.text = "* %s braces behind a wall of roots!" % player_creature.nickname
 	else:
 		var multiplier := BattleRules.effectiveness(affinity, enemy_creature.definition.affinity)
 		var damage := BattleRules.technique_damage(power, player_creature, enemy_creature, multiplier)
 		enemy_creature.receive_damage(damage)
-		message_label.text = "%s used %s for %d damage%s" % [player_creature.nickname, label, damage, " — effective!" if multiplier > 1.0 else "."]
+		message_label.text = "* %s used %s for %d damage%s" % [player_creature.nickname, label, damage, " — effective!" if multiplier > 1.0 else "."]
 	_update_hud()
 	if enemy_creature.is_fainted():
 		_finish_battle(true)
 		return
-	await get_tree().create_timer(0.65).timeout
-	_begin_dodge_phase()
+	await get_tree().create_timer(0.8).timeout
+	_resolve_enemy_turn()
 
 
-func _begin_dodge_phase() -> void:
-	phase = Phase.DODGE
-	command_grid.hide()
-	dodge_box.show()
-	guard_marker.position = dodge_box.size * 0.5 - guard_marker.size * 0.5
-	_dodge_time = 3.6
-	_spawn_time = 0.05
-	message_label.text = "Dodge the attack! Move the green guard marker."
-
-
-func _spawn_hazard() -> void:
-	var hazard := ColorRect.new()
-	hazard.size = Vector2(12, 22)
-	hazard.color = Color("#e7bc62")
-	hazard.position = Vector2(randf_range(8.0, maxi(9.0, dodge_box.size.x - 20.0)), -24.0)
-	dodge_box.add_child(hazard)
-	_hazards.append(hazard)
-
-
-func _remove_hazard(hazard: ColorRect) -> void:
-	_hazards.erase(hazard)
-	hazard.queue_free()
-
-
-func _end_dodge_phase() -> void:
-	for hazard in _hazards.duplicate():
-		_remove_hazard(hazard)
-	phase = Phase.COMMAND
+func _resolve_enemy_turn() -> void:
+	var power := 9
+	var damage := BattleRules.technique_damage(power, enemy_creature, player_creature)
+	if guarded:
+		damage = maxi(1, ceili(float(damage) * 0.4))
+	player_creature.receive_damage(damage)
+	message_label.text = "* %s struck back for %d damage%s" % [
+		enemy_creature.nickname,
+		damage,
+		" — Brace softened the blow." if guarded else ".",
+	]
+	_update_hud()
+	if player_creature.is_fainted():
+		_finish_battle(false)
+		return
 	guarded = false
-	dodge_box.hide()
-	command_grid.show()
-	message_label.text = "Choose Bramblet's next technique."
+	await get_tree().create_timer(0.8).timeout
+	phase = Phase.COMMAND
+	message_label.text = "* What will %s do?" % player_creature.nickname
+	_set_commands_disabled(false)
 	_focus_first_command()
 
 
 func _finish_battle(player_won: bool) -> void:
 	phase = Phase.FINISHED
 	command_grid.hide()
-	dodge_box.hide()
-	message_label.text = "%s" % ("Bramblet prevailed! The wild Nokomon withdraws." if player_won else "Bramblet can no longer battle. Return to the clinic.")
+	message_label.text = "* %s" % ("Bramblet prevailed! The wild Nokomon withdraws." if player_won else "Bramblet can no longer battle. Return to the clinic.")
 	await get_tree().create_timer(1.5).timeout
 	hide()
-	set_process(false)
 	battle_finished.emit(player_won)
+
+
+func _set_commands_disabled(disabled: bool) -> void:
+	for child in command_grid.get_children():
+		(child as Button).disabled = disabled
 
 
 func _update_hud() -> void:
