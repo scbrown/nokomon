@@ -3,6 +3,7 @@ extends Node
 
 @onready var world: ExplorationWorld = $ExplorationWorld
 @onready var inventory: InventoryScreen = $Interface/InventoryScreen
+@onready var battle: BattleScreen = $Interface/BattleScreen
 @onready var prompt: Label = $Interface/Hud/Prompt
 @onready var notice: Label = $Interface/Hud/Notice
 
@@ -11,6 +12,7 @@ func _ready() -> void:
 	if not OS.has_feature("web"):
 		get_viewport().get_window().min_size = Vector2i(640, 360)
 	inventory.hide()
+	battle.battle_finished.connect(_on_battle_finished)
 	inventory.close_requested.connect(_close_inventory)
 	inventory.item_action_requested.connect(_on_item_action_requested)
 	world.encounter_requested.connect(_on_encounter_requested)
@@ -19,13 +21,13 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("open_inventory"):
+	if event.is_action_pressed("open_inventory") and not battle.visible:
 		if inventory.visible:
 			_close_inventory()
 		else:
 			_open_inventory()
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("interact") and not inventory.visible:
+	elif event.is_action_pressed("interact") and not inventory.visible and not battle.visible:
 		if not world.try_interact():
 			notice.text = "There is nothing close enough to interact with."
 
@@ -42,7 +44,15 @@ func _close_inventory() -> void:
 
 
 func _on_encounter_requested(creature_name: String, behavior: String) -> void:
-	notice.text = "%s is %s. Battle and befriending will connect here next." % [creature_name, behavior]
+	world.set_player_input_enabled(false)
+	$Interface/Hud.hide()
+	battle.start_battle(creature_name, behavior)
+
+
+func _on_battle_finished(player_won: bool) -> void:
+	world.set_player_input_enabled(true)
+	$Interface/Hud.show()
+	notice.text = "Bramblet won the encounter." if player_won else "Bramblet needs care at the clinic."
 
 
 func _on_item_action_requested(item_id: StringName) -> void:

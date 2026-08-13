@@ -255,6 +255,14 @@ withdraw when the encounter allows it. Priority and speed determine resolution.
 Switching is strategically important, and some techniques may anticipate or
 punish predictable switches.
 
+Enemy turns include a brief, direct defensive phase inside a bounded arena.
+The player moves a guard marker to evade readable attack patterns; collisions
+damage the active Nokomon, while successful dodging reduces or avoids that
+turn's damage. Patterns should express the opposing creature's affinity and
+behavior. This real-time defense complements rather than replaces technique
+choice, affinity strategy, switching, status effects, and creature statistics.
+Common patterns remain short so routine encounters stay brisk and accessible.
+
 Most wild and routine encounters should use fewer than six opposing creatures.
 Full-party battles are reserved for rivals, major characters, and important
 story encounters so ordinary play remains brisk.
