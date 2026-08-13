@@ -1,19 +1,56 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://src/main/main.gd" id="1_main"]
-[ext_resource type="PackedScene" path="res://src/ui/inventory/inventory_screen.tscn" id="2_inventory"]
+[ext_resource type="PackedScene" path="res://src/world/exploration_world.tscn" id="2_world"]
+[ext_resource type="PackedScene" path="res://src/ui/inventory/inventory_screen.tscn" id="3_inventory"]
 
-[node name="Main" type="Control"]
+[node name="Main" type="Node"]
+script = ExtResource("1_main")
+
+[node name="ExplorationWorld" parent="." instance=ExtResource("2_world")]
+
+[node name="Interface" type="CanvasLayer" parent="."]
+
+[node name="Hud" type="Control" parent="Interface"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_main")
+mouse_filter = 2
 
-[node name="InventoryScreen" parent="." instance=ExtResource("2_inventory")]
+[node name="Notice" type="Label" parent="Interface/Hud"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 720.0
+offset_bottom = 64.0
+theme_override_colors/font_color = Color(0.94, 0.86, 0.65, 1)
+theme_override_colors/font_shadow_color = Color(0.05, 0.08, 0.07, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 19
+
+[node name="Prompt" type="Label" parent="Interface/Hud"]
 layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -54.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.94, 0.79, 0.43, 1)
+theme_override_colors/font_shadow_color = Color(0.05, 0.08, 0.07, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 17
+text = "CONTROLS"
+horizontal_alignment = 1
+
+[node name="InventoryScreen" parent="Interface" instance=ExtResource("3_inventory")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

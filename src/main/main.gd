@@ -1,7 +1,49 @@
 class_name Main
-extends Control
+extends Node
+
+@onready var world: ExplorationWorld = $ExplorationWorld
+@onready var inventory: InventoryScreen = $Interface/InventoryScreen
+@onready var prompt: Label = $Interface/Hud/Prompt
+@onready var notice: Label = $Interface/Hud/Notice
 
 
 func _ready() -> void:
 	if not OS.has_feature("web"):
 		get_viewport().get_window().min_size = Vector2i(640, 360)
+	inventory.hide()
+	inventory.close_requested.connect(_close_inventory)
+	inventory.item_action_requested.connect(_on_item_action_requested)
+	world.encounter_requested.connect(_on_encounter_requested)
+	prompt.text = "WASD / LEFT STICK  MOVE    F / A  INTERACT    TAB / Y  SATCHEL"
+	notice.text = "Explore Brassleaf and approach a visible Nokomon."
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("open_inventory"):
+		if inventory.visible:
+			_close_inventory()
+		else:
+			_open_inventory()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("interact") and not inventory.visible:
+		if not world.try_interact():
+			notice.text = "There is nothing close enough to interact with."
+
+
+func _open_inventory() -> void:
+	inventory.show()
+	world.set_player_input_enabled(false)
+
+
+func _close_inventory() -> void:
+	inventory.hide()
+	world.set_player_input_enabled(true)
+	notice.text = "Satchel closed."
+
+
+func _on_encounter_requested(creature_name: String, behavior: String) -> void:
+	notice.text = "%s is %s. Battle and befriending will connect here next." % [creature_name, behavior]
+
+
+func _on_item_action_requested(item_id: StringName) -> void:
+	notice.text = "Used inventory hook: %s" % item_id
