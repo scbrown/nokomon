@@ -16,9 +16,12 @@ func _physics_process(_delta: float) -> void:
 
 
 func _draw() -> void:
+	draw_ellipse(Vector2(0, 16), 19.0, 8.0, Color(0.02, 0.05, 0.04, 0.5))
 	draw_circle(Vector2.ZERO, 18.0, Color("#173f39"))
+	draw_circle(Vector2(0, 3), 15.0, Color("#285f52"))
 	draw_circle(Vector2(0, -4), 13.0, Color("#d7aa62"))
 	draw_rect(Rect2(-12, -23, 24, 8), Color("#4a2c23"))
 	draw_rect(Rect2(-8, -30, 16, 10), Color("#7f4b2d"))
 	draw_circle(Vector2(-5, -5), 2.0, Color("#241b18"))
 	draw_circle(Vector2(5, -5), 2.0, Color("#241b18"))
+	draw_line(Vector2(-8, 11), Vector2(8, 11), Color("#d7aa62"), 3)

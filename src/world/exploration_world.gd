@@ -3,13 +3,17 @@ extends Node2D
 
 signal encounter_requested(creature_name: String, behavior: String)
 
+const ATLAS: Texture2D = preload("res://assets/vendor/kenney_roguelike_rpg/atlas.png")
+const ATLAS_STEP := 17
+const TILE_SIZE := 16
+
 var player: PlayerController
 var _creatures: Array[VisibleCreature] = []
 
 
 func _ready() -> void:
 	_build_boundaries()
-	_build_landmarks()
+	_build_scenery()
 	player = PlayerController.new()
 	player.name = "Player"
 	player.position = Vector2(430, 500)
@@ -85,30 +89,109 @@ func _build_boundaries() -> void:
 		add_child(body)
 
 
-func _build_landmarks() -> void:
-	# Landmarks are deliberately simple prototype geometry, ready to be replaced by tiles.
-	pass
+func _build_scenery() -> void:
+	# Vendor tiles are temporary scaffolding. Their placement establishes density,
+	# layers, and scale while original Nokomon environment art is developed.
+	for position_value: Vector2 in [
+		Vector2(930, 210), Vector2(1080, 175), Vector2(1260, 190),
+		Vector2(1450, 165), Vector2(1650, 205), Vector2(1840, 250),
+		Vector2(1010, 870), Vector2(1210, 940), Vector2(1450, 915),
+		Vector2(1690, 900), Vector2(1850, 790),
+	]:
+		_add_shadow(position_value + Vector2(0, 22), Vector2(48, 18))
+		_add_atlas_tile(Vector2i(18, 10), position_value, 4.0, Color("#bdd28c"), 2)
+
+	for position_value: Vector2 in [
+		Vector2(970, 360), Vector2(1110, 310), Vector2(1320, 300),
+		Vector2(1520, 290), Vector2(1740, 380), Vector2(1160, 810),
+		Vector2(1390, 830), Vector2(1600, 790), Vector2(1800, 680),
+	]:
+		_add_atlas_tile(Vector2i(23, 10), position_value, 3.0, Color("#9dbc73"), 1)
+
+	for position_value: Vector2 in [Vector2(885, 470), Vector2(935, 470), Vector2(985, 470), Vector2(1035, 470)]:
+		_add_atlas_tile(Vector2i(43, 14), position_value, 3.0, Color("#d0a466"), 1)
+
+	for position_value: Vector2 in [
+		Vector2(125, 330), Vector2(360, 350), Vector2(705, 335),
+		Vector2(115, 850), Vector2(455, 850), Vector2(740, 850),
+	]:
+		_add_atlas_tile(Vector2i(44, 22), position_value, 3.0, Color("#b77942"), 3)
+
+	for position_value: Vector2 in [Vector2(465, 395), Vector2(700, 585), Vector2(790, 395)]:
+		_add_atlas_tile(Vector2i(30, 8), position_value, 3.0, Color("#ffd16a"), 3)
+
+	for position_value: Vector2 in [Vector2(540, 845), Vector2(600, 845), Vector2(660, 845)]:
+		_add_atlas_tile(Vector2i(45, 13), position_value, 3.0, Color("#d8b27b"), 3)
+
+
+func _add_atlas_tile(cell: Vector2i, position_value: Vector2, scale_value: float, tint: Color, z: int) -> void:
+	var texture := AtlasTexture.new()
+	texture.atlas = ATLAS
+	texture.region = Rect2(cell.x * ATLAS_STEP, cell.y * ATLAS_STEP, TILE_SIZE, TILE_SIZE)
+	var sprite := Sprite2D.new()
+	sprite.texture = texture
+	sprite.position = position_value
+	sprite.scale = Vector2.ONE * scale_value
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	sprite.modulate = tint
+	sprite.z_index = z
+	add_child(sprite)
+
+
+func _add_shadow(position_value: Vector2, size_value: Vector2) -> void:
+	var shadow := Polygon2D.new()
+	shadow.polygon = PackedVector2Array([
+		Vector2(-size_value.x, 0), Vector2(-size_value.x * 0.6, -size_value.y),
+		Vector2(size_value.x * 0.6, -size_value.y), Vector2(size_value.x, 0),
+		Vector2(size_value.x * 0.6, size_value.y), Vector2(-size_value.x * 0.6, size_value.y),
+	])
+	shadow.position = position_value
+	shadow.color = Color(0.03, 0.08, 0.05, 0.45)
+	shadow.z_index = 0
+	add_child(shadow)
 
 
 func _draw() -> void:
-	draw_rect(Rect2(0, 0, 1920, 1080), Color("#263f2c"))
-	draw_rect(Rect2(40, 90, 820, 900), Color("#735138"))
-	draw_rect(Rect2(860, 250, 1060, 610), Color("#304f31"))
-	draw_rect(Rect2(790, 430, 360, 140), Color("#9b7146"))
+	draw_rect(Rect2(0, 0, 1920, 1080), Color("#1b3325"))
+	draw_rect(Rect2(40, 90, 820, 900), Color("#674733"))
+	draw_rect(Rect2(860, 250, 1060, 610), Color("#29452d"))
+	draw_rect(Rect2(790, 430, 360, 140), Color("#926741"))
+	# Small deterministic marks break up broad flat fields without visual noise.
+	var random := RandomNumberGenerator.new()
+	random.seed = 1900
+	for index in 260:
+		var point := Vector2(random.randi_range(65, 830), random.randi_range(110, 970))
+		draw_rect(Rect2(point, Vector2(3, 3)), Color(0.24, 0.15, 0.11, 0.28))
+	for index in 420:
+		var point := Vector2(random.randi_range(875, 1900), random.randi_range(265, 845))
+		draw_rect(Rect2(point, Vector2(3, 5)), Color(0.45, 0.62, 0.32, 0.24))
+	# Paths layer lighter edges over darker soil to suggest wear and height.
+	draw_rect(Rect2(780, 421, 380, 158), Color(0.12, 0.16, 0.11, 0.35))
+	draw_rect(Rect2(790, 430, 360, 140), Color("#926741"))
+	draw_line(Vector2(810, 447), Vector2(1130, 447), Color("#bd8b57"), 3)
 	# Settlement buildings and clinic.
 	for rect: Rect2 in [Rect2(110, 150, 230, 150), Rect2(410, 130, 260, 180), Rect2(170, 650, 270, 180)]:
-		draw_rect(rect, Color("#4b3026"))
-		draw_rect(Rect2(rect.position + Vector2(12, 12), rect.size - Vector2(24, 24)), Color("#a85e35"))
+		draw_rect(Rect2(rect.position + Vector2(12, 18), rect.size), Color(0.08, 0.06, 0.05, 0.52))
+		draw_rect(rect, Color("#3d281f"))
+		draw_colored_polygon(PackedVector2Array([rect.position + Vector2(-18, 18), rect.position + Vector2(rect.size.x * 0.5, -42), rect.position + Vector2(rect.size.x + 18, 18)]), Color("#8d4b31"))
+		draw_rect(Rect2(rect.position + Vector2(12, 20), rect.size - Vector2(24, 32)), Color("#9b5a36"))
+		draw_rect(Rect2(rect.position + Vector2(rect.size.x * 0.5 - 22, rect.size.y - 62), Vector2(44, 62)), Color("#38271f"))
+		draw_rect(Rect2(rect.position + Vector2(28, 55), Vector2(42, 36)), Color("#edbd60"))
 	draw_rect(Rect2(500, 620, 270, 190), Color("#e2d3ad"))
+	draw_rect(Rect2(516, 636, 238, 158), Color("#cbbd98"), false, 5)
 	draw_rect(Rect2(530, 650, 210, 130), Color("#396858"))
+	draw_colored_polygon(PackedVector2Array([Vector2(485, 650), Vector2(635, 580), Vector2(785, 650)]), Color("#4d3025"))
+	draw_circle(Vector2(635, 638), 26, Color("#e7d59e"))
+	draw_rect(Rect2(628, 620, 14, 36), Color("#3b725f"))
+	draw_rect(Rect2(617, 631, 36, 14), Color("#3b725f"))
 	draw_string(ThemeDB.fallback_font, Vector2(557, 717), "CLINIC", HORIZONTAL_ALIGNMENT_LEFT, -1, 28, Color("#f1dfad"))
 	# Railway and forest detail.
+	draw_rect(Rect2(40, 465, 780, 104), Color("#302c27"))
 	for x in range(50, 800, 48):
-		draw_rect(Rect2(x, 470, 28, 90), Color("#3a3028"))
+		draw_rect(Rect2(x, 470, 28, 90), Color("#5a4534"))
 	draw_line(Vector2(40, 485), Vector2(820, 485), Color("#b88b4d"), 8)
 	draw_line(Vector2(40, 545), Vector2(820, 545), Color("#b88b4d"), 8)
-	for position_value: Vector2 in [Vector2(1030, 300), Vector2(1280, 250), Vector2(1540, 260), Vector2(1780, 500), Vector2(1050, 780), Vector2(1360, 880), Vector2(1700, 850)]:
-		draw_circle(position_value, 58, Color("#173823"))
-		draw_circle(position_value + Vector2(0, -12), 44, Color("#285c34"))
+	draw_line(Vector2(40, 482), Vector2(820, 482), Color("#e0b96c"), 2)
+	draw_line(Vector2(40, 542), Vector2(820, 542), Color("#e0b96c"), 2)
 	draw_string(ThemeDB.fallback_font, Vector2(110, 75), "BRASSLEAF SETTLEMENT", HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Color("#f0d390"))
 	draw_string(ThemeDB.fallback_font, Vector2(1150, 210), "FERNWOOD MARGIN", HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Color("#dce7bd"))
