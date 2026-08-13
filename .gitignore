@@ -1,5 +1,6 @@
 # Godot editor cache and generated imports
 .godot/
+*.import
 
 # Local and exported builds
 build/
