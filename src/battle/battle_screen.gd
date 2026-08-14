@@ -77,8 +77,8 @@ func _build_interface() -> void:
 	field.custom_minimum_size.y = 320
 	arena.add_child(field)
 	creature_texture = TextureRect.new()
-	creature_texture.position = Vector2(65, 35)
-	creature_texture.size = Vector2(330, 260)
+	creature_texture.position = Vector2(35, 5)
+	creature_texture.size = Vector2(430, 310)
 	creature_texture.texture = AMPUST.battle_texture
 	creature_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	creature_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
