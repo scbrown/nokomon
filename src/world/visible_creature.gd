@@ -35,7 +35,9 @@ func _on_body_exited(body: Node2D) -> void:
 func _draw() -> void:
 	_draw_ellipse(Vector2(0, 21), Vector2(24, 9), Color(0.02, 0.05, 0.04, 0.48))
 	if creature_texture != null:
-		draw_texture_rect(creature_texture, Rect2(-25, -38, 50, 60), false)
+		var display_height := 75.0
+		var display_width := display_height * creature_texture.get_width() / creature_texture.get_height()
+		draw_texture_rect(creature_texture, Rect2(-display_width * 0.5, -54, display_width, display_height), false)
 		return
 	draw_circle(Vector2.ZERO, 22.0, Color("#172422"))
 	draw_circle(Vector2(0, 2), 18.0, affinity_color)
