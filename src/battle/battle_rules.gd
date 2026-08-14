@@ -16,6 +16,10 @@ static func effectiveness(attack_affinity: StringName, defense_affinity: StringN
 		return 0.5
 	if attack_affinity == &"Earth" and defense_affinity in [&"Electric", &"Poison", &"Mystic"]:
 		return 2.0
+	if attack_affinity == &"Ghost" and defense_affinity in [&"Plant", &"Beast", &"Dragon", &"Ghost"]:
+		return 2.0
+	if attack_affinity == &"Bug" and defense_affinity in [&"Plant", &"Mystic", &"Air"]:
+		return 2.0
 	return 1.0
 
 

@@ -7,15 +7,14 @@ signal creature_befriended(creature: CreatureInstance)
 
 enum Phase { COMMAND, RESOLVING, FINISHED }
 
-const BRAMBLET: CreatureDefinition = preload("res://src/data/creatures/bramblet.tres")
-const ANPUST: CreatureDefinition = preload("res://src/data/creatures/anpust.tres")
+const AMPUST: CreatureDefinition = preload("res://src/data/creatures/ampust.tres")
 const CREAM := Color("#f0e2bd")
 const GREEN := Color("#1d5948")
 const TEAL := Color("#123f38")
 const BRASS := Color("#d2a44f")
 const INK := Color("#202c27")
 
-var player_creature := CreatureInstance.new(BRAMBLET, 5, "Bramblet")
+var player_creature := CreatureInstance.new(AMPUST, 5, "Ampust")
 var enemy_creature: CreatureInstance
 var phase := Phase.COMMAND
 var guarded := false
@@ -80,7 +79,7 @@ func _build_interface() -> void:
 	creature_texture = TextureRect.new()
 	creature_texture.position = Vector2(65, 35)
 	creature_texture.size = Vector2(330, 260)
-	creature_texture.texture = BRAMBLET.battle_texture
+	creature_texture.texture = AMPUST.battle_texture
 	creature_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	creature_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	field.add_child(creature_texture)
@@ -118,10 +117,10 @@ func _build_interface() -> void:
 	command_grid.add_theme_constant_override("h_separation", 12)
 	command_grid.add_theme_constant_override("v_separation", 10)
 	page.add_child(command_grid)
-	_add_command("ROOT RUSH", 11, &"Plant", false)
-	_add_command("LEAF FLICK", 8, &"Plant", false)
-	_add_command("BURROW BASH", 10, &"Earth", false)
-	_add_command("BRACE · INSTINCT", 0, &"Plant", true)
+	_add_command("WRAITH POUNCE", 11, &"Ghost", false)
+	_add_command("LOCUST RASP", 8, &"Bug", false)
+	_add_command("TOMB DUST", 10, &"Ghost", false)
+	_add_command("SHED HUSK · INSTINCT", 0, &"Bug", true)
 	_add_special_command("OFFER MOSS BISCUIT", _on_offer_treat)
 	_add_special_command("WITHDRAW", _on_withdraw)
 
@@ -187,7 +186,7 @@ func _on_command(label: String, power: int, affinity: StringName, instinct: bool
 	_set_commands_disabled(true)
 	guarded = instinct
 	if instinct:
-		message_label.text = "* %s braces behind a wall of roots!" % player_creature.nickname
+		message_label.text = "* %s leaves a spectral husk to soften the next blow!" % player_creature.nickname
 	else:
 		var multiplier := BattleRules.effectiveness_against(affinity, enemy_creature.definition)
 		var damage := BattleRules.technique_damage(power, player_creature, enemy_creature, multiplier)
@@ -280,7 +279,7 @@ func _finish_battle(player_won: bool) -> void:
 	phase = Phase.FINISHED
 	command_grid.hide()
 	if not _befriended:
-		message_label.text = "* %s" % ("Bramblet prevailed! The wild Nokomon withdraws." if player_won else "Bramblet can no longer battle. Return to the clinic.")
+		message_label.text = "* %s" % ("Ampust prevailed! The wild Nokomon withdraws." if player_won else "Ampust can no longer battle. Return to the clinic.")
 	await get_tree().create_timer(1.5).timeout
 	hide()
 	battle_finished.emit(player_won)
@@ -303,8 +302,6 @@ func _update_hud() -> void:
 
 
 func _enemy_definition(enemy_name: String, behavior: String) -> CreatureDefinition:
-	if enemy_name == "Anpust":
-		return ANPUST
 	var definition := CreatureDefinition.new()
 	definition.id = StringName(enemy_name.to_snake_case())
 	definition.species_name = enemy_name

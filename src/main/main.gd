@@ -58,7 +58,7 @@ func _on_battle_finished(player_won: bool) -> void:
 	world.set_player_input_enabled(true)
 	$Interface/Hud.show()
 	if battle.player_creature.is_fainted():
-		notice.text = "Bramblet needs care at the clinic."
+		notice.text = "Ampust needs care at the clinic."
 	elif player_won:
 		notice.text = "Encounter resolved. Companions: %d." % _known_companions.size()
 	else:
