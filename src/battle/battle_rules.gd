@@ -17,3 +17,10 @@ static func effectiveness(attack_affinity: StringName, defense_affinity: StringN
 	if attack_affinity == &"Earth" and defense_affinity in [&"Electric", &"Poison", &"Mystic"]:
 		return 2.0
 	return 1.0
+
+
+static func effectiveness_against(attack_affinity: StringName, defender: CreatureDefinition) -> float:
+	var result := 1.0
+	for defense_affinity in defender.affinities():
+		result *= effectiveness(attack_affinity, defense_affinity)
+	return result

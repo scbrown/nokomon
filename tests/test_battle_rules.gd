@@ -9,6 +9,10 @@ func _init() -> void:
 	var multiplier := BattleRules.effectiveness(&"Plant", &"Water")
 	_expect(multiplier == 2.0, "Plant is effective against Water")
 	_expect(BattleRules.effectiveness(&"Plant", &"Air") == 0.5, "Plant is resisted by Air")
+	var dual_defender := _definition(&"Ghost", 10, 11)
+	dual_defender.secondary_affinity = &"Bug"
+	_expect(BattleRules.effectiveness_against(&"Plant", dual_defender) == 1.0, "dual affinities combine deterministically")
+	_expect(dual_defender.affinity_label() == "Ghost / Bug", "dual affinities have a readable label")
 	_expect(BattleRules.technique_damage(8, attacker, defender, multiplier) == 22, "damage is deterministic")
 	_expect(defender.receive_damage(999) == defender.max_hp(), "damage cannot remove more than current HP")
 	_expect(defender.current_hp == 0, "HP cannot fall below zero")

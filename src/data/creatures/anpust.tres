@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CreatureDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/creature_definition.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/creatures/anpust/battle.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"anpust"
+species_name = "Anpust"
+affinity = &"Ghost"
+secondary_affinity = &"Bug"
+base_max_hp = 30
+attack = 12
+defense = 10
+speed = 15
+battle_texture = ExtResource("2")

@@ -225,6 +225,11 @@ if the narrative does not give it a clear purpose.
 Initial creatures should generally have one affinity. The data model may allow
 multiple affinities so the mechanic can be explored later without a rewrite.
 
+**Anpust** is a confirmed dual-affinity **Ghost/Bug** Nokomon inspired by a
+locust and Anubis. Its initial player-authored sprite is stored with the game;
+detailed ecology, techniques, and recruitment behavior remain open for further
+development.
+
 ## Battles
 
 Battles are turn-based. The player carries a party of up to six creatures, with

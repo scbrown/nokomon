@@ -8,6 +8,7 @@ signal creature_befriended(creature: CreatureInstance)
 enum Phase { COMMAND, RESOLVING, FINISHED }
 
 const BRAMBLET: CreatureDefinition = preload("res://src/data/creatures/bramblet.tres")
+const ANPUST: CreatureDefinition = preload("res://src/data/creatures/anpust.tres")
 const CREAM := Color("#f0e2bd")
 const GREEN := Color("#1d5948")
 const TEAL := Color("#123f38")
@@ -30,6 +31,7 @@ var enemy_hp_label: Label
 var message_label: Label
 var command_grid: GridContainer
 var creature_texture: TextureRect
+var enemy_texture: TextureRect
 
 
 func _ready() -> void:
@@ -38,15 +40,9 @@ func _ready() -> void:
 
 
 func start_battle(enemy_name: String, enemy_behavior: String) -> void:
-	var definition := CreatureDefinition.new()
-	definition.id = StringName(enemy_name.to_snake_case())
-	definition.species_name = enemy_name
-	definition.affinity = _enemy_affinity(enemy_name)
-	definition.base_max_hp = 28
-	definition.attack = 10 if enemy_behavior != "aggressive" else 13
-	definition.defense = 9
-	definition.speed = 8
+	var definition := _enemy_definition(enemy_name, enemy_behavior)
 	enemy_creature = CreatureInstance.new(definition, 4)
+	enemy_texture.texture = definition.battle_texture
 	self.enemy_behavior = enemy_behavior
 	_befriended = false
 	phase = Phase.COMMAND
@@ -88,6 +84,13 @@ func _build_interface() -> void:
 	creature_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	creature_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	field.add_child(creature_texture)
+	enemy_texture = TextureRect.new()
+	enemy_texture.position = Vector2(820, 140)
+	enemy_texture.size = Vector2(220, 145)
+	enemy_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	enemy_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	enemy_texture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	field.add_child(enemy_texture)
 
 	var enemy_card := _make_status_card(true)
 	enemy_card.position = Vector2(710, 38)
@@ -186,7 +189,7 @@ func _on_command(label: String, power: int, affinity: StringName, instinct: bool
 	if instinct:
 		message_label.text = "* %s braces behind a wall of roots!" % player_creature.nickname
 	else:
-		var multiplier := BattleRules.effectiveness(affinity, enemy_creature.definition.affinity)
+		var multiplier := BattleRules.effectiveness_against(affinity, enemy_creature.definition)
 		var damage := BattleRules.technique_damage(power, player_creature, enemy_creature, multiplier)
 		enemy_creature.receive_damage(damage)
 		message_label.text = "* %s used %s for %d damage%s" % [player_creature.nickname, label, damage, " — effective!" if multiplier > 1.0 else "."]
@@ -289,23 +292,28 @@ func _set_commands_disabled(disabled: bool) -> void:
 
 
 func _update_hud() -> void:
-	player_name_label.text = "%s · Lv.%d · %s" % [player_creature.nickname, player_creature.level, player_creature.definition.affinity]
+	player_name_label.text = "%s · Lv.%d · %s" % [player_creature.nickname, player_creature.level, player_creature.definition.affinity_label()]
 	player_hp_bar.max_value = player_creature.max_hp()
 	player_hp_bar.value = player_creature.current_hp
 	player_hp_label.text = "%d / %d HP" % [player_creature.current_hp, player_creature.max_hp()]
-	enemy_name_label.text = "%s · Lv.%d · %s" % [enemy_creature.nickname, enemy_creature.level, enemy_creature.definition.affinity]
+	enemy_name_label.text = "%s · Lv.%d · %s" % [enemy_creature.nickname, enemy_creature.level, enemy_creature.definition.affinity_label()]
 	enemy_hp_bar.max_value = enemy_creature.max_hp()
 	enemy_hp_bar.value = enemy_creature.current_hp
 	enemy_hp_label.text = "%d / %d HP" % [enemy_creature.current_hp, enemy_creature.max_hp()]
 
 
-func _enemy_affinity(enemy_name: String) -> StringName:
-	match enemy_name:
-		"Cindervole":
-			return &"Fire"
-		"Gloamoth":
-			return &"Ghost"
-	return &"Plant"
+func _enemy_definition(enemy_name: String, behavior: String) -> CreatureDefinition:
+	if enemy_name == "Anpust":
+		return ANPUST
+	var definition := CreatureDefinition.new()
+	definition.id = StringName(enemy_name.to_snake_case())
+	definition.species_name = enemy_name
+	definition.affinity = &"Fire" if enemy_name == "Cindervole" else (&"Ghost" if enemy_name == "Gloamoth" else &"Plant")
+	definition.base_max_hp = 28
+	definition.attack = 10 if behavior != "aggressive" else 13
+	definition.defense = 9
+	definition.speed = 8
+	return definition
 
 
 func _focus_first_command() -> void:

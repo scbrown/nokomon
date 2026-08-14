@@ -4,6 +4,7 @@ extends Node2D
 signal encounter_requested(creature_name: String, behavior: String)
 
 const ATLAS: Texture2D = preload("res://assets/vendor/kenney_roguelike_rpg/atlas.png")
+const ANPUST_TEXTURE: Texture2D = preload("res://assets/creatures/anpust/battle.png")
 const ATLAS_STEP := 17
 const TILE_SIZE := 16
 
@@ -33,6 +34,7 @@ func _ready() -> void:
 	_spawn_creature("Mossling", "curious", Vector2(1180, 430), Color("#6f9d55"))
 	_spawn_creature("Cindervole", "wary", Vector2(1460, 720), Color("#b86537"))
 	_spawn_creature("Gloamoth", "aggressive", Vector2(1670, 330), Color("#75638f"))
+	_spawn_creature("Anpust", "wary", Vector2(1510, 520), Color("#496f45"), ANPUST_TEXTURE)
 	queue_redraw()
 
 
@@ -47,11 +49,18 @@ func set_player_input_enabled(enabled: bool) -> void:
 	player.input_enabled = enabled
 
 
-func _spawn_creature(name_value: String, behavior_value: String, spawn_position: Vector2, color: Color) -> void:
+func _spawn_creature(
+	name_value: String,
+	behavior_value: String,
+	spawn_position: Vector2,
+	color: Color,
+	texture: Texture2D = null
+) -> void:
 	var creature := VisibleCreature.new()
 	creature.creature_name = name_value
 	creature.behavior = behavior_value
 	creature.affinity_color = color
+	creature.creature_texture = texture
 	creature.position = spawn_position
 	creature.approached.connect(encounter_requested.emit)
 	add_child(creature)
