@@ -232,6 +232,10 @@ locust and Anubis. Its initial player-authored sprite is stored with the game;
 detailed ecology, techniques, and recruitment behavior remain open for further
 development.
 
+**Srmimilghel** is a confirmed **Earth**-affinity Nokomon. Its initial
+player-authored sprite is stored with the game; its ecology, techniques, and
+recruitment behavior remain open for further development.
+
 ## Battles
 
 Battles are turn-based. The player carries a party of up to six creatures, with

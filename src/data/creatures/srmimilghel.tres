@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CreatureDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/creature_definition.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/creatures/srmimilghel/battle.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"srmimilghel"
+species_name = "Srmimilghel"
+affinity = &"Earth"
+base_max_hp = 36
+attack = 11
+defense = 14
+speed = 7
+battle_texture = ExtResource("2")

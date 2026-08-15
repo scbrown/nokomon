@@ -8,6 +8,7 @@ signal creature_befriended(creature: CreatureInstance)
 enum Phase { COMMAND, RESOLVING, FINISHED }
 
 const AMPUST: CreatureDefinition = preload("res://src/data/creatures/ampust.tres")
+const SRMIMILGHEL: CreatureDefinition = preload("res://src/data/creatures/srmimilghel.tres")
 const CREAM := Color("#f0e2bd")
 const GREEN := Color("#1d5948")
 const TEAL := Color("#123f38")
@@ -302,6 +303,8 @@ func _update_hud() -> void:
 
 
 func _enemy_definition(enemy_name: String, behavior: String) -> CreatureDefinition:
+	if enemy_name == SRMIMILGHEL.species_name:
+		return SRMIMILGHEL
 	var definition := CreatureDefinition.new()
 	definition.id = StringName(enemy_name.to_snake_case())
 	definition.species_name = enemy_name
