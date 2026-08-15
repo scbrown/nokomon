@@ -11,17 +11,18 @@ func _physics_process(_delta: float) -> void:
 		return
 	velocity = Input.get_vector("move_left", "move_right", "move_up", "move_down") * movement_speed
 	move_and_slide()
-	global_position.x = clampf(global_position.x, 28.0, 1892.0)
-	global_position.y = clampf(global_position.y, 28.0, 1052.0)
+	global_position.x = clampf(global_position.x, 12.0, 1908.0)
+	global_position.y = clampf(global_position.y, 12.0, 1076.0)
 
 
 func _draw() -> void:
-	draw_ellipse(Vector2(0, 16), 19.0, 8.0, Color(0.02, 0.05, 0.04, 0.5))
-	draw_circle(Vector2.ZERO, 18.0, Color("#173f39"))
-	draw_circle(Vector2(0, 3), 15.0, Color("#285f52"))
-	draw_circle(Vector2(0, -4), 13.0, Color("#d7aa62"))
-	draw_rect(Rect2(-12, -23, 24, 8), Color("#4a2c23"))
-	draw_rect(Rect2(-8, -30, 16, 10), Color("#7f4b2d"))
-	draw_circle(Vector2(-5, -5), 2.0, Color("#241b18"))
-	draw_circle(Vector2(5, -5), 2.0, Color("#241b18"))
-	draw_line(Vector2(-8, 11), Vector2(8, 11), Color("#d7aa62"), 3)
+	# The complete player silhouette fits a single 24 x 24 pixel box.
+	draw_ellipse(Vector2(0, 9), 10.0, 3.0, Color(0.02, 0.05, 0.04, 0.5))
+	draw_rect(Rect2(-9, 1, 18, 10), Color("#285f52"))
+	draw_rect(Rect2(-8, -7, 16, 10), Color("#d7aa62"))
+	draw_rect(Rect2(-10, -9, 20, 4), Color("#4a2c23"))
+	draw_rect(Rect2(-6, -12, 12, 4), Color("#7f4b2d"))
+	draw_rect(Rect2(-5, -3, 2, 2), Color("#241b18"))
+	draw_rect(Rect2(3, -3, 2, 2), Color("#241b18"))
+	draw_rect(Rect2(-6, 8, 4, 4), Color("#173f39"))
+	draw_rect(Rect2(2, 8, 4, 4), Color("#173f39"))

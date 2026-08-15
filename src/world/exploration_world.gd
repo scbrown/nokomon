@@ -4,8 +4,13 @@ extends Node2D
 signal encounter_requested(creature_name: String, behavior: String)
 
 const ATLAS: Texture2D = preload("res://assets/vendor/kenney_roguelike_rpg/atlas.png")
+const FLOOR_TILE: Texture2D = preload("res://assets/world/floor.png")
 const ATLAS_STEP := 17
 const TILE_SIZE := 16
+const GRID_SIZE := 32
+const WORLD_SIZE := Vector2i(1920, 1088)
+# The source image has a one-pixel border around its 32 px tile artwork.
+const FLOOR_SOURCE_REGION := Rect2(1, 1, GRID_SIZE, GRID_SIZE)
 
 var player: PlayerController
 var _creatures: Array[VisibleCreature] = []
@@ -26,8 +31,8 @@ func _ready() -> void:
 	camera.position_smoothing_speed = 7.0
 	camera.limit_left = 0
 	camera.limit_top = 0
-	camera.limit_right = 1920
-	camera.limit_bottom = 1080
+	camera.limit_right = WORLD_SIZE.x
+	camera.limit_bottom = WORLD_SIZE.y
 	player.add_child(camera)
 
 	_spawn_creature("Mossling", "curious", Vector2(1180, 430), Color("#6f9d55"))
@@ -73,18 +78,18 @@ func _spawn_creature(
 
 func _add_player_collision() -> void:
 	var shape := CollisionShape2D.new()
-	var circle := CircleShape2D.new()
-	circle.radius = 16.0
-	shape.shape = circle
+	var rectangle := RectangleShape2D.new()
+	rectangle.size = Vector2(20, 20)
+	shape.shape = rectangle
 	player.add_child(shape)
 
 
 func _build_boundaries() -> void:
 	for data: Array in [
 		[Vector2(960, -16), Vector2(1920, 32)],
-		[Vector2(960, 1096), Vector2(1920, 32)],
-		[Vector2(-16, 540), Vector2(32, 1080)],
-		[Vector2(1936, 540), Vector2(32, 1080)],
+		[Vector2(960, 1104), Vector2(1920, 32)],
+		[Vector2(-16, 544), Vector2(32, 1088)],
+		[Vector2(1936, 544), Vector2(32, 1088)],
 	]:
 		var body := StaticBody2D.new()
 		body.position = data[0]
@@ -159,9 +164,17 @@ func _add_shadow(position_value: Vector2, size_value: Vector2) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(0, 0, 1920, 1080), Color("#1b3325"))
-	draw_rect(Rect2(40, 90, 820, 900), Color("#674733"))
-	draw_rect(Rect2(860, 250, 1060, 610), Color("#29452d"))
+	for y in range(0, WORLD_SIZE.y, GRID_SIZE):
+		for x in range(0, WORLD_SIZE.x, GRID_SIZE):
+			draw_texture_rect_region(
+				FLOOR_TILE,
+				Rect2(x, y, GRID_SIZE, GRID_SIZE),
+				FLOOR_SOURCE_REGION
+			)
+	# Transparent regional tints preserve the floor texture while distinguishing
+	# the settlement soil and deeper woodland.
+	draw_rect(Rect2(40, 90, 820, 900), Color(0.35, 0.19, 0.12, 0.48))
+	draw_rect(Rect2(860, 250, 1060, 610), Color(0.08, 0.18, 0.09, 0.34))
 	draw_rect(Rect2(790, 430, 360, 140), Color("#926741"))
 	# Small deterministic marks break up broad flat fields without visual noise.
 	var random := RandomNumberGenerator.new()

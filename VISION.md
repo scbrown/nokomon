@@ -36,7 +36,9 @@ Nokomon is a **pixel art game**. Environments, characters, creatures, battle
 scenes, effects, and interface art should share a deliberate pixel-art visual
 language with crisp edges and consistent pixel density. Animation should favor
 clear poses and expressive key frames over excessive detail. Exact sprite
-resolution, tile size, and animation frame counts remain prototype decisions.
+animation frame counts remain prototype decisions. The overworld uses a 32×32
+pixel tile grid, with the player drawn at 24×24 pixels so paths and surrounding
+terrain remain readable.
 
 The world uses a predominantly earthy color palette. Forests are built from
 many dark, layered greens, with lighter foliage and natural highlights used to
@@ -413,6 +415,6 @@ multiplayer should wait until that answer is clear.
 - What information about enemy intent is shown during battle?
 - What is the familiar's origin and personality?
 - How demanding should expeditions be without consumable recovery items?
-- What sprite resolution, tile size, and animation budget best preserve
+- What animation budget and creature sprite resolution best preserve
   readability across desktop and browser displays?
 - How are major world-state consequences communicated and saved?
