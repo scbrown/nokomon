@@ -233,8 +233,9 @@ detailed ecology, techniques, and recruitment behavior remain open for further
 development.
 
 **Srmimilghel** is a confirmed **Earth**-affinity Nokomon. Its initial
-player-authored sprite is stored with the game; its ecology, techniques, and
-recruitment behavior remain open for further development.
+player-authored sprite is stored with the game, and it appears in an authored
+forest-floor clearing in Fernwood. Its ecology, techniques, and recruitment
+behavior remain open for further development.
 
 ## Battles
 

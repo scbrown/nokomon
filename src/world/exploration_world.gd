@@ -5,6 +5,7 @@ signal encounter_requested(creature_name: String, behavior: String)
 
 const ATLAS: Texture2D = preload("res://assets/vendor/kenney_roguelike_rpg/atlas.png")
 const FLOOR_TILE: Texture2D = preload("res://assets/world/floor.png")
+const FERNWOOD_FLOOR: Texture2D = preload("res://assets/world/fernwood_floor.png")
 const SRMIMILGHEL_TEXTURE: Texture2D = preload("res://assets/creatures/srmimilghel/battle.png")
 const ATLAS_STEP := 17
 const TILE_SIZE := 16
@@ -12,6 +13,8 @@ const GRID_SIZE := 32
 const WORLD_SIZE := Vector2i(1920, 1088)
 # The source image has a one-pixel border around its 32 px tile artwork.
 const FLOOR_SOURCE_REGION := Rect2(1, 1, GRID_SIZE, GRID_SIZE)
+const FERNWOOD_SOURCE_REGION := Rect2(161, 61, 346, 495)
+const FERNWOOD_FLOOR_RECT := Rect2(1216, 288, 352, 512)
 
 var player: PlayerController
 var _creatures: Array[VisibleCreature] = []
@@ -39,7 +42,7 @@ func _ready() -> void:
 	_spawn_creature("Mossling", "curious", Vector2(1180, 430), Color("#6f9d55"))
 	_spawn_creature("Cindervole", "wary", Vector2(1460, 720), Color("#b86537"))
 	_spawn_creature("Gloamoth", "aggressive", Vector2(1670, 330), Color("#75638f"))
-	_spawn_creature("Srmimilghel", "wary", Vector2(1056, 672), Color("#9a7448"), SRMIMILGHEL_TEXTURE)
+	_spawn_creature("Srmimilghel", "wary", Vector2(1376, 512), Color("#9a7448"), SRMIMILGHEL_TEXTURE)
 	queue_redraw()
 
 
@@ -173,6 +176,9 @@ func _draw() -> void:
 				Rect2(x, y, GRID_SIZE, GRID_SIZE),
 				FLOOR_SOURCE_REGION
 			)
+	# This authored clearing sits on the same 32 px layout grid. Its transparent
+	# source margins are excluded so only the painted forest floor is visible.
+	draw_texture_rect_region(FERNWOOD_FLOOR, FERNWOOD_FLOOR_RECT, FERNWOOD_SOURCE_REGION)
 	# Transparent regional tints preserve the floor texture while distinguishing
 	# the settlement soil and deeper woodland.
 	draw_rect(Rect2(40, 90, 820, 900), Color(0.35, 0.19, 0.12, 0.48))
